@@ -1,0 +1,58 @@
+{
+  "mappings": {
+    "properties": {
+      "docid": {
+        "type": "text",
+        "fields": {"keyword": {"ignore_above": 256, "type": "keyword"}}
+      },
+      "start_char": {
+        "type": "integer"
+      },
+      "end_char": {
+        "type": "integer"
+      },
+      "headings": {
+        "type": "text"
+      },
+      "title": {
+        "type": "text"
+      },
+      "segment": {
+        "type": "text"
+      },
+      "url": {
+        "type": "text"
+      }
+
+    }
+  },
+  "settings": {
+    "index": {
+      "analysis": {
+        "char_filter": {
+          "remove_punctuation": {
+            "type": "pattern_replace",
+            "pattern": " ([\\.\\?\\:\\[\\]\\(\\)“”\",!;] ?)+ ",
+            "replacement": " "
+          }
+        },
+        "filter": {
+            "2_3_shingles": {
+              "type": "shingle",
+              "min_shingle_size": 2,
+              "max_shingle_size": 3
+          }
+        },
+        "analyzer": {
+          "analyzer_custom": {
+            "tokenizer": "standard",
+            "filter": [
+              "lowercase", "2_3_shingles"
+            ],
+            "char_filter": ["remove_punctuation"]
+          }
+        }
+      }
+    }
+  }
+}
